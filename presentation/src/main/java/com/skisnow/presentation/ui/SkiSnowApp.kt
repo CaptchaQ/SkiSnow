@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.skisnow.presentation.detail.SessionDetailScreen
+import com.skisnow.presentation.settings.SettingsScreen
 
 @Composable
 fun SkiSnowApp() {
@@ -15,9 +16,10 @@ fun SkiSnowApp() {
         val navController = rememberNavController()
         NavHost(navController = navController, startDestination = Routes.SESSION) {
             composable(Routes.SESSION) {
-                SessionScreen(onOpenDetail = { id ->
-                    navController.navigate("${Routes.DETAIL}/$id")
-                })
+                SessionScreen(
+                    onOpenDetail = { id -> navController.navigate("${Routes.DETAIL}/$id") },
+                    onOpenSettings = { navController.navigate(Routes.SETTINGS) },
+                )
             }
             composable(
                 route = "${Routes.DETAIL}/{${Args.SESSION_ID}}",
@@ -29,6 +31,9 @@ fun SkiSnowApp() {
                     onBack = { navController.popBackStack() },
                 )
             }
+            composable(Routes.SETTINGS) {
+                SettingsScreen(onBack = { navController.popBackStack() })
+            }
         }
     }
 }
@@ -36,6 +41,7 @@ fun SkiSnowApp() {
 object Routes {
     const val SESSION = "session"
     const val DETAIL = "detail"
+    const val SETTINGS = "settings"
 }
 
 object Args {

@@ -20,9 +20,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -40,8 +44,11 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.skisnow.domain.model.Units
+import com.skisnow.domain.model.UnitConverter
 import com.skisnow.presentation.map.SkiMapView
 import com.skisnow.presentation.session.SessionViewModel
+import com.skisnow.presentation.settings.SettingsViewModel
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import org.koin.androidx.compose.koinViewModel
@@ -49,9 +56,13 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun SessionScreen(
     onOpenDetail: (String) -> Unit,
+    onOpenSettings: () -> Unit,
     viewModel: SessionViewModel = koinViewModel(),
+    settingsViewModel: SettingsViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val settings by settingsViewModel.state.collectAsStateWithLifecycle()
+    val units = settings.units
     val context = LocalContext.current
     val scroll = rememberScrollState()
 
@@ -96,6 +107,10 @@ fun SessionScreen(
         }
     }
 
+    val speedLabel = UnitConverter.speedLabel(units)
+    val distLabel = UnitConverter.distanceLabel(units)
+    val altLabel = UnitConverter.altitudeLabel(units)
+
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -103,10 +118,19 @@ fun SessionScreen(
                 .verticalScroll(scroll)
                 .padding(bottom = 16.dp),
         ) {
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(8.dp),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                IconButton(onClick = onOpenSettings, modifier = Modifier.testTag("btn_settings")) {
+                    Icon(Icons.Filled.Settings, contentDescription = "Settings")
+                }
+            }
+
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(320.dp)
+                    .height(300.dp)
                     .testTag("ski_map"),
             ) {
                 SkiMapView(points = state.points)
@@ -157,13 +181,16 @@ fun SessionScreen(
                         modifier = Modifier.testTag("session_status"),
                     )
                     Spacer(Modifier.height(8.dp))
+                    val distance = UnitConverter.distanceKm(state.liveStats.distanceM, units)
+                    val maxSpeed = UnitConverter.speedKmh(state.liveStats.maxSpeedMps, units)
+                    val vertical = UnitConverter.altitudeM(state.liveStats.verticalDropM, units)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        StatCell("Distance", "${state.distanceKm} km")
-                        StatCell("Max", "${state.speedKmh} km/h")
-                        StatCell("Vert", "${state.verticalM} m")
+                        StatCell("%.2f %s".format(distance, distLabel), "Distance")
+                        StatCell("%.1f %s".format(maxSpeed, speedLabel), "Max")
+                        StatCell("%.0f %s".format(vertical, altLabel), "Vert")
                     }
                     Spacer(Modifier.height(12.dp))
                     Row(
@@ -286,9 +313,9 @@ fun SessionScreen(
 }
 
 @Composable
-private fun StatCell(label: String, value: String) {
+private fun StatCell(value: String, label: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = value, style = MaterialTheme.typography.titleLarge)
-        Text(text = label, style = MaterialTheme.typography.labelMedium)
+        Text(value, style = MaterialTheme.typography.titleLarge)
+        Text(label, style = MaterialTheme.typography.labelMedium)
     }
 }
