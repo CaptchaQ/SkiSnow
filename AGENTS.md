@@ -307,10 +307,9 @@ domain → (no Android)
 
 Proposed expansion (packages first; Gradle modules later — ADR-0005):
 `feature-session|map|history|weather` under presentation; `data-location|session|map|weather` under data.
-
 - DI: **Koin**
 - UI: Compose only; single-activity **NavHost** routes (`Session` → `Detail/{session_id}`; `Settings` planned)
-- DI: **Koin**
+- `applicationId` / namespace base: `com.skisnow.app`
 - **LOCATION lane open** (ADR accepted); FGS/permissions only with security-review on the PR
 - Domain ports: `SessionRepository`, `LocationTracker`, `StatsCalculator`, `WeatherRepository`
 - Product docs: `docs/product/skisnow-intent.md`, `product-brief.md`, `competitive-research.md`, `capability-plan.md`, `stats-spec.md`
