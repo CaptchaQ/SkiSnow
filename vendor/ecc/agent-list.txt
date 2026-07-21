@@ -1,0 +1,12 @@
+kotlin-reviewer.md
+kotlin-build-resolver.md
+planner.md
+architect.md
+tdd-guide.md
+code-reviewer.md
+security-reviewer.md
+build-error-resolver.md
+doc-updater.md
+docs-lookup.md
+performance-optimizer.md
+silent-failure-hunter.md

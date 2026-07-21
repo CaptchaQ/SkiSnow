@@ -1,0 +1,74 @@
+# Built application files
+*.apk
+*.aar
+*.ap_
+*.aab
+
+# Files for the ART/Dalvik VM
+*.dex
+
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+out/
+release/
+
+# Gradle
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration
+local.properties
+*.jks
+*.keystore
+!.keystore.placeholder
+
+# Secrets / env
+.env
+.env.*
+!.env.example
+
+# Stitch secrets / local design cache (if any)
+.stitch/secrets*
+.stitch/*.token
+.stitch/credentials*
+
+# Android Studio / IntelliJ
+*.iml
+.idea/
+.navigation/
+captures/
+.externalNativeBuild/
+.cxx/
+*.hprof
+.DS_Store
+
+# NDK
+obj/
+
+# Kotlin
+.kotlin/
+
+# OS
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+
+# Temporary helper scripts (agent scratch)
+_inspect_sources.ps1
+_verify_skills.ps1
+_verify_full.ps1
+
+# Oh My Pi / agent local
+.omp/
+*.local.md
+
+# Captures / screenshots local
+fastlane/screenshots/

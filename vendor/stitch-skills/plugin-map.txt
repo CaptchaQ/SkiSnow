@@ -1,0 +1,8 @@
+generate-design=plugins/stitch-design/skills/generate-design
+manage-design-system=plugins/stitch-design/skills/manage-design-system
+code-to-design=plugins/stitch-design/skills/code-to-design
+extract-design-md=plugins/stitch-design/skills/extract-design-md
+upload-to-stitch=plugins/stitch-design/skills/upload-to-stitch
+design-md=plugins/stitch-utilities/skills/design-md
+enhance-prompt=plugins/stitch-utilities/skills/enhance-prompt
+taste-design=plugins/stitch-utilities/skills/taste-design

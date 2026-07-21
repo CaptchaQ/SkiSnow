@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tracking_channel_name">Ski day tracking</string>
+    <string name="tracking_channel_desc">Shows while GPS records your ski day</string>
+    <string name="tracking_notification_title">Recording ski day</string>
+    <string name="tracking_notification_paused">Ski day paused</string>
+    <string name="tracking_notification_text">SkiSnow is tracking your route</string>
+    <string name="tracking_notification_stop">Stop</string>
+</resources>
