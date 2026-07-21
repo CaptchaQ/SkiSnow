@@ -309,8 +309,8 @@ Proposed expansion (packages first; Gradle modules later — ADR-0005):
 `feature-session|map|history|weather` under presentation; `data-location|session|map|weather` under data.
 
 - DI: **Koin**
-- UI: Compose only
-- `applicationId` / namespace base: `com.skisnow.app`
+- UI: Compose only; single-activity **NavHost** routes (`Session` → `Detail/{session_id}`; `Settings` planned)
+- DI: **Koin**
 - **LOCATION lane open** (ADR accepted); FGS/permissions only with security-review on the PR
 - Domain ports: `SessionRepository`, `LocationTracker`, `StatsCalculator`, `WeatherRepository`
 - Product docs: `docs/product/skisnow-intent.md`, `product-brief.md`, `competitive-research.md`, `capability-plan.md`, `stats-spec.md`
@@ -371,3 +371,4 @@ Analyses: `docs/ecc-analysis.md`, `docs/stitch-skills-analysis.md`, `docs/emil-s
 - 2026-07-21 — product research done; ADRs 0001–0006 proposed; LOCATION still closed; domain ports added
 - 2026-07-21 — user accepted ADR-0001…0006; product prefs locked; LOCATION lane open with security-review gate
 - 2026-07-21 — slice-0: Room + Fused/FGS + MapLibre 2D + Open-Meteo chip + Session UI; security checklist
+- 2026-07-21 — PR#4 merged: session detail + elevation + NavHost navigation
