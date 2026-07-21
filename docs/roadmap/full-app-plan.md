@@ -61,9 +61,9 @@ Work **one PR at a time**: implement → tests green → fill PR checklist → m
 
 | PR | Title | Deliverables | Exit criteria | Status |
 |----|-------|--------------|---------------|--------|
-| **#0** | fix: StopSession STOPPING finalize | Domain fix + unit tests | `:domain:test` green | in progress |
-| **#1** | docs: roadmap + GitHub house style | Plan, README, PR/issue templates, LICENSE | Docs only | next |
-| **#2** | feat: session detail + elevation chart | Detail screen, nav from history | UI + unit stats series | planned |
+| #0 | fix: StopSession STOPPING finalize | Domain fix + unit tests | `:domain:test` green | **done** (on main) |
+| #1 | docs: roadmap + GitHub house style | Plan, README, PR/issue templates, LICENSE | Docs only | **done** (on main) |
+| #2 | feat: session detail + elevation chart | Detail screen, nav from history | UI + unit stats series | next |
 | **#3** | feat: settings + units preference | DataStore prefs, metric default | Preference persists | planned |
 | **#4** | feat: offline basemap packs | MapLibre offline region API | Download + use offline | planned |
 | **#5** | feat: speed heatmap + timeline | Polyline coloring + scrubber | Replay day | planned |
