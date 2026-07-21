@@ -13,6 +13,12 @@ import kotlin.math.sqrt
  */
 interface StatsCalculator {
     fun calculate(points: List<TrackPoint>): SessionStats
+
+    /**
+     * Elevation profile for charting: (distanceAlongTrackM, altitudeM) using smoothed altitudes
+     * and cumulative haversine distance on accuracy-gated points. May downsample.
+     */
+    fun elevationProfile(points: List<TrackPoint>, maxSamples: Int = 500): List<Pair<Double, Double>>
 }
 
 /**
@@ -80,6 +86,47 @@ class DefaultStatsCalculator(
             maxSpeedMps = maxSpeed,
             avgMovingSpeedMps = avgMoving,
         )
+    }
+
+    override fun elevationProfile(points: List<TrackPoint>, maxSamples: Int): List<Pair<Double, Double>> {
+        if (points.isEmpty()) return emptyList()
+        val gated = points.filter { p ->
+            val acc = p.accuracyM
+            acc != null && acc <= maxAccuracyM && p.altitudeM != null
+        }
+        if (gated.isEmpty()) return emptyList()
+
+        val smoothed = medianSmooth(gated.map { it.altitudeM!! }, medianWindow)
+        val cumulative = ArrayList<Double>(gated.size).also { rows ->
+            var dist = 0.0
+            rows.add(0.0)
+            for (i in 1 until gated.size) {
+                val a = gated[i - 1]
+                val b = gated[i]
+                val dt = Duration.between(a.time, b.time).seconds
+                if (dt <= 0 || dt > maxGapSeconds) {
+                    rows.add(dist)
+                    continue
+                }
+                dist += haversineM(a.lat, a.lon, b.lat, b.lon)
+                rows.add(dist)
+            }
+        }
+
+        val profile = gated.indices.map { i -> cumulative[i] to smoothed[i] }
+        return if (profile.size <= maxSamples) profile else downsample(profile, maxSamples)
+    }
+
+    private fun downsample(
+        profile: List<Pair<Double, Double>>,
+        maxSamples: Int,
+    ): List<Pair<Double, Double>> {
+        if (maxSamples < 2) return listOf(profile.first(), profile.last())
+        val step = (profile.size - 1).toDouble() / maxSamples
+        return (0..maxSamples).map { idx ->
+            val i = Math.round(idx * step).toInt().coerceIn(0, profile.lastIndex)
+            profile[i]
+        }
     }
 
     private fun durationOf(points: List<TrackPoint>): Duration {

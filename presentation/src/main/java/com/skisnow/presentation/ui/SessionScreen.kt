@@ -5,6 +5,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +48,7 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SessionScreen(
+    onOpenDetail: (String) -> Unit,
     viewModel: SessionViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -261,7 +263,7 @@ fun SessionScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(160.dp)
+                    .height(200.dp)
                     .padding(horizontal = 12.dp, vertical = 8.dp)
                     .testTag("history_list"),
             ) {
@@ -271,7 +273,11 @@ fun SessionScreen(
                     Text(
                         text = "${fmt.format(day.startedAt)} · ${day.status.name}",
                         style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(vertical = 4.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onOpenDetail(day.id.value) }
+                            .padding(vertical = 8.dp)
+                            .testTag("history_row_${day.id.value}"),
                     )
                 }
             }
